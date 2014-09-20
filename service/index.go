@@ -3,16 +3,19 @@ package service
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
+
+	"github.com/goinggo/concurrentwebservice/search"
 )
 
 // index handles the home page route processing.
 func index(w http.ResponseWriter, r *http.Request) {
-	result := ""
+	var result *search.Result
 	if r.Method == "POST" {
-		result = "Comming Soon"
+		result = search.Submit("news iraq")
 	}
 
 	view, err := renderIndex(result)
@@ -24,9 +27,15 @@ func index(w http.ResponseWriter, r *http.Request) {
 }
 
 // renderIndex generates the HTML response for this route.
-func renderIndex(result string) ([]byte, error) {
+func renderIndex(result *search.Result) ([]byte, error) {
 	vars := make(map[string]interface{})
-	vars["Results"] = result
+	if result != nil {
+		data, err := json.MarshalIndent(result.Results, "", "    ")
+		if err != nil {
+			vars["Results"] = err.Error()
+		}
+		vars["Results"] = string(data)
+	}
 
 	// Generate the HTML for the index content.
 	index := bytes.NewBufferString("")
