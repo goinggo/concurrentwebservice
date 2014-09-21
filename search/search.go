@@ -44,29 +44,30 @@ type Searcher interface {
 func Submit(options *Options) []Result {
 	log.Printf("Google Search : Started : %#v\n", options)
 
-	var searchers []Searcher
 	var final []Result
+	searchers := make(map[string]Searcher)
 	searchResults := make(chan []Result)
 
 	// Create a Google Searcher if checked.
 	if options.Google {
 		log.Println("Submit : Info : Adding Google")
-		searchers = append(searchers, NewGoogle())
+		searchers["google"] = NewGoogle()
 	}
 
 	// Create a Bing Searcher if checked.
 	if options.Bing {
 		log.Println("Submit : Info : Adding Bing")
-		searchers = append(searchers, NewBing())
+		searchers["bing"] = NewBing()
 	}
 
 	// Create a Bing Searcher if checked.
 	if options.Blekko {
 		log.Println("Submit : Info : Adding Blekko")
-		searchers = append(searchers, NewBlekko())
+		searchers["blekko"] = NewBlekko()
 	}
 
-	// Perform the searches concurrently.
+	// Perform the searches concurrently. Using a map because
+	// it returns the searchers in a random order every time.
 	for _, searcher := range searchers {
 		go searcher.Search(options.SearchTerm, searchResults)
 	}
