@@ -89,6 +89,5 @@ func Submit(options *Options) []Result {
 	}
 
 	log.Printf("Submit : Completed : Found [%d] Results\n", len(final))
-
 	return final
 }

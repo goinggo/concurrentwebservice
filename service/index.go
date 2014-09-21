@@ -2,7 +2,6 @@
 package service
 
 import (
-	"bytes"
 	"fmt"
 	"html/template"
 	"log"
@@ -13,10 +12,13 @@ import (
 
 // index handles the home page route processing.
 func index(w http.ResponseWriter, r *http.Request) {
+	log.Printf("service : index : Started : Method[%s]\n", r.Method)
+
 	var results []search.Result
 
 	// Capture all the form values.
 	fv, options := formValues(r)
+	log.Printf("service : index : Info : options[%#v]\n", options)
 
 	// If this is a post, perform a search.
 	if r.Method == "POST" && options.SearchTerm != "" {
@@ -24,14 +26,12 @@ func index(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Render the index page.
-	view, err := renderIndex(fv, results)
-	if err != nil {
-		fmt.Fprint(w, err)
-		return
-	}
+	markup := renderIndex(fv, results)
 
 	// Write the final markup as the response.
-	fmt.Fprint(w, string(view))
+	fmt.Fprint(w, string(markup))
+
+	log.Println("service : index : Completed")
 }
 
 // formValues extracts the form data.
@@ -74,39 +74,18 @@ func formValues(r *http.Request) (map[string]interface{}, *search.Options) {
 }
 
 // renderIndex generates the HTML response for this route.
-func renderIndex(fv map[string]interface{}, results []search.Result) ([]byte, error) {
-	// Generate the HTML for the results content.
+func renderIndex(fv map[string]interface{}, results []search.Result) []byte {
+	// Generate the markup for the results template.
 	if results != nil {
-		html, err := renderResult(results)
-		if err != nil {
-			fv["Results"] = "Error Processing Results"
-		}
-
-		fv["Results"] = template.HTML(string(html))
+		vars := map[string]interface{}{"Items": results}
+		markup := executeTemplate("results", vars)
+		fv["Results"] = template.HTML(string(markup))
 	}
 
-	// Generate the HTML for the index content.
-	html := new(bytes.Buffer)
-	if err := views["index"].Execute(html, fv); err != nil {
-		log.Printf("Index Service : Index : ERROR : %s\n", err)
-		return nil, err
-	}
+	// Generate the markup for the index template.
+	markup := executeTemplate("index", fv)
 
-	// Bind the layout markup for the final document.
-	return renderLayout(html.Bytes())
-}
-
-// renderResult produces the HTML for the results.
-func renderResult(items []search.Result) ([]byte, error) {
-	vars := make(map[string]interface{})
-	vars["Items"] = items
-
-	// Generate the HTML for the index content.
-	html := new(bytes.Buffer)
-	if err := views["results"].Execute(html, vars); err != nil {
-		log.Printf("Index Service : Results : ERROR : %s\n", err)
-		return nil, err
-	}
-
-	return html.Bytes(), nil
+	// Generate the final markup with the layout template.
+	vars := map[string]interface{}{"LayoutContent": template.HTML(string(markup))}
+	return executeTemplate("layout", vars)
 }

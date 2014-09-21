@@ -42,20 +42,13 @@ func loadTemplate(name string, path string) {
 	views[name] = tmpl
 }
 
-// renderLayout generates the HTML response with the layout
-func renderLayout(content []byte) ([]byte, error) {
-	// Place the layout content into a map for processing.
-	vars := make(map[string]interface{})
-	vars["LayoutContent"] = template.HTML(string(content))
-
-	// Generate the final markup by embedding the index content
-	// into the layout markup.
-	final := new(bytes.Buffer)
-	if err := views["layout"].Execute(final, vars); err != nil {
+// executeTemplate executes the specified template with the specified variables.
+func executeTemplate(name string, vars map[string]interface{}) []byte {
+	markup := new(bytes.Buffer)
+	if err := views[name].Execute(markup, vars); err != nil {
 		log.Println(err)
-		return nil, err
+		return []byte("Error Processing Template")
 	}
 
-	// Return the final markup for the reponse.
-	return final.Bytes(), nil
+	return markup.Bytes()
 }

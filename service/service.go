@@ -7,7 +7,7 @@ import (
 
 // init binds the routes and handlers for the web service.
 func init() {
-	http.HandleFunc("/", index)
+	http.HandleFunc("/search", index)
 }
 
 // Run binds the service to a port and starts listening
