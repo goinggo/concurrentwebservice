@@ -2,10 +2,12 @@
 <center>
 	<h1>SEARCH FOR ANYTHING</h1>
 	<form action="/" method="post">
-		<input name="searchterm" type="text" style="width: 300px; height: 25px; font-size: 16px;" value="{{.searchTerm}}"/>
+		<input name="searchterm" type="text" style="width: 300px; height: 25px; font-size: 16px;" value="{{.searchterm}}"/>
 		<div style="height: 10px; clear: both"></div>
-		<input name="google" {{.google}} type="checkbox"/>&nbsp;Google &nbsp; <input name="bing" {{.bing}} type="checkbox"/>&nbsp;Bing
-		&nbsp; <input name="first" {{.first}} type="checkbox"/>&nbsp;First
+		<input name="google" {{.google}} type="checkbox"/>&nbsp;Google &nbsp;
+		<input name="bing" {{.bing}} type="checkbox"/>&nbsp;Bing &nbsp;
+		<input name="blekko" {{.blekko}} type="checkbox"/>&nbsp;Blekko &nbsp;
+		<input name="first" {{.first}} type="checkbox"/>&nbsp;First
 		<div style="height: 10px; clear: both"></div>
 		<input type="submit" value="Search" style="font-size: 16px;"/>
 	</form>

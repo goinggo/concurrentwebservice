@@ -11,7 +11,7 @@ import (
 // init is called before main. We are using init to
 // set the logging package.
 func init() {
-	log.SetFlags(log.Lshortfile)
+	log.SetFlags(log.LstdFlags | log.Lmicroseconds | log.Lshortfile)
 }
 
 // main is the entry point for the application.

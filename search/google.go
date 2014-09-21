@@ -46,13 +46,13 @@ func (g Google) Search(searchTerm string, searchResults chan<- []Result) {
 
 	// On return send the results we have.
 	defer func() {
+		log.Println("Google Search : Info : Sending Results")
 		searchResults <- results
 	}()
 
 	// Build a proper search url.
 	searchTerm = strings.Replace(searchTerm, " ", "+", -1)
 	uri := "http://ajax.googleapis.com/ajax/services/search/web?v=1.0&rsz=8&q=" + searchTerm
-	log.Printf("Google Search : URL : %s\n", uri)
 
 	// Issue the search against Google.
 	resp, err := http.Get(uri)
@@ -82,5 +82,5 @@ func (g Google) Search(searchTerm string, searchResults chan<- []Result) {
 		})
 	}
 
-	log.Println("Google Search : Completed")
+	log.Printf("Google Search : Completed : Found[%d]\n", len(results))
 }
