@@ -16,13 +16,11 @@ func index(w http.ResponseWriter, r *http.Request) {
 	var results []search.Result
 
 	// Capture all the form values.
-	fv := formValues(r)
+	fv, options := formValues(r)
 
 	// If this is a post, perform a search.
-	if r.Method == "POST" {
-		if fv["searchterm"] != "" {
-			results = search.Submit(fv)
-		}
+	if r.Method == "POST" && options.SearchTerm != "" {
+		results = search.Submit(options)
 	}
 
 	// Render the index page.
@@ -37,35 +35,42 @@ func index(w http.ResponseWriter, r *http.Request) {
 }
 
 // formValues extracts the form data.
-func formValues(r *http.Request) map[string]interface{} {
+func formValues(r *http.Request) (map[string]interface{}, *search.Options) {
 	fv := make(map[string]interface{})
+	var options search.Options
+
 	fv["searchterm"] = r.FormValue("searchterm")
+	options.SearchTerm = r.FormValue("searchterm")
 
 	if r.FormValue("google") == "on" {
 		fv["google"] = "checked"
+		options.Google = true
 	} else {
 		fv["google"] = ""
 	}
 
 	if r.FormValue("bing") == "on" {
 		fv["bing"] = "checked"
+		options.Bing = true
 	} else {
 		fv["bing"] = ""
 	}
 
 	if r.FormValue("blekko") == "on" {
 		fv["blekko"] = "checked"
+		options.Blekko = true
 	} else {
 		fv["blekko"] = ""
 	}
 
 	if r.FormValue("first") == "on" {
 		fv["first"] = "checked"
+		options.First = true
 	} else {
 		fv["first"] = ""
 	}
 
-	return fv
+	return fv, &options
 }
 
 // renderIndex generates the HTML response for this route.
@@ -74,7 +79,7 @@ func renderIndex(fv map[string]interface{}, results []search.Result) ([]byte, er
 	if results != nil {
 		html, err := renderResult(results)
 		if err != nil {
-			fv["Results"] = err.Error()
+			fv["Results"] = "Error Processing Results"
 		}
 
 		fv["Results"] = template.HTML(string(html))
