@@ -14,13 +14,12 @@ import (
 func index(w http.ResponseWriter, r *http.Request) {
 	log.Printf("service : index : Started : Method[%s]\n", r.Method)
 
-	var results []search.Result
-
 	// Capture all the form values.
 	fv, options := formValues(r)
 	log.Printf("service : index : Info : options[%#v]\n", options)
 
 	// If this is a post, perform a search.
+	var results []search.Result
 	if r.Method == "POST" && options.SearchTerm != "" {
 		results = search.Submit(options)
 	}
