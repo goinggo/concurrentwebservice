@@ -16,7 +16,8 @@ bill@ardanstudios.com
 	go get github.com/goinggo/concurrentwebservice
 		
 	-- Run
-	concurrentwebservice
+	cd $GOPATH/src/github.com/goinggo/concurrentwebservice
+	./concurrentwebservice
 	http://localhost:9999/search
 
 ### Notes About Architecture
