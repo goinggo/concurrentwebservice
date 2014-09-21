@@ -21,6 +21,6 @@ bill@ardanstudios.com
 
 ### Notes About Architecture
 
-	This is more refactoring that can be done but this is a good starting point. The code is built within two packages. The service package that handles the processing of HTTP requests and responses. HTML templates are used to render the views. The search package handles the processing of searches agains the different search engines. An interface called Searcher is declared to support the implementation of new Searchers.
+	The code is built within two packages. The service package handles the processing of HTTP requests and responses. HTML templates are used to render the views. The search package handles the processing of searches agains the different search engines. An interface called Searcher is declared to support the implementation of new Searchers.
 
 	The sample is currently missing tests which I need to add.
