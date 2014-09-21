@@ -74,7 +74,7 @@ func Submit(options *Options) []Result {
 
 	// Wait for the results to come back.
 	for search := 0; search < len(searchers); search++ {
-		// Wait to recieve results and save them.
+		// Wait to recieve results.
 		log.Println("Submit : Info : Waiting For Results...")
 		results := <-searchResults
 
@@ -82,7 +82,8 @@ func Submit(options *Options) []Result {
 		log.Printf("Submit : Info : Results Returned : Results[%d]\n", len(results))
 		final = append(final, results...)
 
-		// If we just want the first result, don't wait any longer.
+		// If we just want the first result, don't wait any longer and give
+		// the user the results we have.
 		if options.First {
 			break
 		}
