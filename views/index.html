@@ -1,13 +1,18 @@
 <div style="height: 100px; clear: both"></div>
 <center>
 	<h1>SEARCH FOR ANYTHING</h1>
-	<input type="text" style="width: 300px; height: 25px; font-size: 16px;" value=""/>
-	<div style="height: 10px; clear: both"></div>
 	<form action="/" method="post">
-		<input id="searchterm" type="submit" value="Search" style="font-size: 16px;"/>
+		<input name="searchterm" type="text" style="width: 300px; height: 25px; font-size: 16px;" value="{{.searchTerm}}"/>
+		<div style="height: 10px; clear: both"></div>
+		<input name="google" {{.google}} type="checkbox"/>&nbsp;Google &nbsp; <input name="bing" {{.bing}} type="checkbox"/>&nbsp;Bing
+		&nbsp; <input name="first" {{.first}} type="checkbox"/>&nbsp;First
+		<div style="height: 10px; clear: both"></div>
+		<input type="submit" value="Search" style="font-size: 16px;"/>
 	</form>
 </center>
 <center>
 	<div style="height: 25px; clear: both"></div>
-	{{.Results}}
+	<div style="text-align:left; width: 600px">
+		{{.Results}}
+	</div>
 </center>

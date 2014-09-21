@@ -16,6 +16,7 @@ var views = make(map[string]*template.Template)
 func init() {
 	loadTemplate("layout", "views/basic-layout.html")
 	loadTemplate("index", "views/index.html")
+	loadTemplate("results", "views/results.html")
 }
 
 // loadTemplate reads the specified template file for use.
@@ -42,10 +43,10 @@ func loadTemplate(name string, path string) {
 }
 
 // renderLayout generates the HTML response with the layout
-func renderLayout(content *bytes.Buffer) ([]byte, error) {
+func renderLayout(content []byte) ([]byte, error) {
 	// Place the layout content into a map for processing.
 	vars := make(map[string]interface{})
-	vars["LayoutContent"] = template.HTML(content.String())
+	vars["LayoutContent"] = template.HTML(string(content))
 
 	// Generate the final markup by embedding the index content
 	// into the layout markup.

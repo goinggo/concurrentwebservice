@@ -1,0 +1,4 @@
+{{range $index, $val := .Items}}
+	<div style="clear:both; font-size:16px; margin-top: 10px">{{$val.Engine}} : <a target="_blank" href="{{$val.Link}}">{{$val.TitleHTML}}</a></div>
+	<div style="clear:both; font-size:14px">{{$val.ContentHTML}}</div>
+{{end}}
