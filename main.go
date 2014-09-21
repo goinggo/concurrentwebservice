@@ -16,5 +16,5 @@ func init() {
 
 // main is the entry point for the application.
 func main() {
-	service.Start()
+	service.Run()
 }

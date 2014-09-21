@@ -10,8 +10,8 @@ func init() {
 	http.HandleFunc("/", index)
 }
 
-// Start binds the service to a port and starts listening
+// Run binds the service to a port and starts listening
 // for requests.
-func Start() {
+func Run() {
 	http.ListenAndServe("localhost:9999", nil)
 }

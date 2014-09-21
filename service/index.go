@@ -86,7 +86,7 @@ func renderIndex(fv map[string]interface{}, results []search.Result) ([]byte, er
 	}
 
 	// Generate the HTML for the index content.
-	html := bytes.NewBufferString("")
+	html := new(bytes.Buffer)
 	if err := views["index"].Execute(html, fv); err != nil {
 		log.Printf("Index Service : Index : ERROR : %s\n", err)
 		return nil, err
@@ -102,7 +102,7 @@ func renderResult(items []search.Result) ([]byte, error) {
 	vars["Items"] = items
 
 	// Generate the HTML for the index content.
-	html := bytes.NewBufferString("")
+	html := new(bytes.Buffer)
 	if err := views["results"].Execute(html, vars); err != nil {
 		log.Printf("Index Service : Results : ERROR : %s\n", err)
 		return nil, err

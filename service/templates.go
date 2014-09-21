@@ -50,7 +50,7 @@ func renderLayout(content []byte) ([]byte, error) {
 
 	// Generate the final markup by embedding the index content
 	// into the layout markup.
-	final := bytes.NewBufferString("")
+	final := new(bytes.Buffer)
 	if err := views["layout"].Execute(final, vars); err != nil {
 		log.Println(err)
 		return nil, err
