@@ -74,6 +74,17 @@ func Submit(options *Options) []Result {
 
 	// Wait for the results to come back.
 	for search := 0; search < len(searchers); search++ {
+		// If we just want the first result, don't wait any longer by
+		// concurrently discarding the remaining searchResults.
+		// Failing to do so will leave the Searchers blocked forever.
+		if options.First && search > 0 {
+			go func() {
+				results := <-searchResults
+				log.Printf("search : Submit : Info : Results Discarded : Results[%d]\n", len(results))
+			}()
+			continue
+		}
+
 		// Wait to recieve results.
 		log.Println("search : Submit : Info : Waiting For Results...")
 		results := <-searchResults
@@ -81,12 +92,6 @@ func Submit(options *Options) []Result {
 		// Save the results to the final slice.
 		log.Printf("search : Submit : Info : Results Returned : Results[%d]\n", len(results))
 		final = append(final, results...)
-
-		// If we just want the first result, don't wait any longer and give
-		// the user the results we have.
-		if options.First {
-			break
-		}
 	}
 
 	log.Printf("search : Submit : Completed : Found [%d] Results\n", len(final))
