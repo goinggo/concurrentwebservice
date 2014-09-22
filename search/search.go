@@ -4,7 +4,6 @@ package search
 import (
 	"html/template"
 	"log"
-	"sync"
 )
 
 // Options provides the search options for performing searches.
@@ -73,41 +72,27 @@ func Submit(options *Options) []Result {
 		go searcher.Search(options.SearchTerm, searchResults)
 	}
 
-	var wg sync.WaitGroup
-	wg.Add(1)
-
-	go func() {
-		var sent bool
-
-		for search := 0; search < len(searchers); search++ {
-			// Wait to recieve results.
-			log.Println("search : Submit : Info : Waiting For Results...")
-			sr := <-searchResults
-
-			if sent {
-				continue
-			}
-
-			// Save the results to the results slice.
-			log.Printf("search : Submit : Info : Results Returned : Results[%d]\n", len(sr))
-			final = append(final, sr...)
-
-			// If we just want the first result, don't wait any longer and give
-			// the user the results we have.
-			if options.First {
-				sent = true
-				wg.Done()
-			}
+	// Wait for the results to come back.
+	for search := 0; search < len(searchers); search++ {
+		// If we just want the first result, don't wait any longer by
+		// concurrently discarding the remaining searchResults.
+		// Failing to do so will leave the Searchers blocked forever.
+		if options.First && search > 0 {
+			go func() {
+				results := <-searchResults
+				log.Printf("search : Submit : Info : Results Discarded : Results[%d]\n", len(results))
+			}()
+			continue
 		}
 
-		if !sent {
-			wg.Done()
-		}
+		// Wait to recieve results.
+		log.Println("search : Submit : Info : Waiting For Results...")
+		results := <-searchResults
 
-		log.Println("search : Submit : Info : All Results Are In")
-	}()
-
-	wg.Wait()
+		// Save the results to the final slice.
+		log.Printf("search : Submit : Info : Results Used : Results[%d]\n", len(results))
+		final = append(final, results...)
+	}
 
 	log.Printf("search : Submit : Completed : Found [%d] Results\n", len(final))
 	return final
