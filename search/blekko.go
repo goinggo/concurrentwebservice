@@ -17,7 +17,7 @@ func NewBlekko() Searcher {
 // Search implements the Searcher interface. It performs a search
 // against Blekko.
 func (b Blekko) Search(searchTerm string, searchResults chan<- []Result) {
-	log.Printf("Blekko Search : Started : searchTerm[%s]\n", searchTerm)
+	log.Printf("Blekko : Search : Started : searchTerm[%s]\n", searchTerm)
 
 	// Build a proper search url.
 	searchTerm = strings.Replace(searchTerm, " ", "+", -1)
@@ -26,5 +26,5 @@ func (b Blekko) Search(searchTerm string, searchResults chan<- []Result) {
 	// Perform a RSS search.
 	rssSearch("Blekko", uri, searchResults)
 
-	log.Println("Blekko Search : Completed")
+	log.Println("Blekko : Search : Completed")
 }

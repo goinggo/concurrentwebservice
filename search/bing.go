@@ -17,7 +17,7 @@ func NewBing() Searcher {
 // Search implements the Searcher interface. It performs a search
 // against Bing.
 func (b Bing) Search(searchTerm string, searchResults chan<- []Result) {
-	log.Printf("Bing Search : Started : searchTerm[%s]\n", searchTerm)
+	log.Printf("Bing : Seared : Started : searchTerm[%s]\n", searchTerm)
 
 	// Build a proper search url.
 	searchTerm = strings.Replace(searchTerm, " ", "+", -1)
@@ -26,5 +26,5 @@ func (b Bing) Search(searchTerm string, searchResults chan<- []Result) {
 	// Perform a RSS search.
 	rssSearch("Bing", uri, searchResults)
 
-	log.Println("Bing Search : Completed")
+	log.Println("Bing : Search : Completed")
 }

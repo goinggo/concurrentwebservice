@@ -41,20 +41,22 @@ type (
 
 // rssSearch is used against any RSS feeds.
 func rssSearch(engine string, uri string, searchResults chan<- []Result) {
+	log.Printf("%s : rssSearch : Started : URI[%s]\n", engine, uri)
+
 	// Need an empty slice so I can return an empty
 	// JSON document if necessary.
 	results := []Result{}
 
 	// On return send the results we have.
 	defer func() {
-		log.Printf("%s rssSearch : Info : Sending Results\n", engine)
+		log.Printf("%s : rssSearch : Info : Sending Results\n", engine)
 		searchResults <- results
 	}()
 
 	// Issue the search against Blekko.
 	resp, err := http.Get(uri)
 	if err != nil {
-		log.Printf("%s rssSearch : Get : ERROR : %s\n", engine, err)
+		log.Printf("%s : rssSearch : Get : ERROR : %s\n", engine, err)
 		return
 	}
 
@@ -65,7 +67,7 @@ func rssSearch(engine string, uri string, searchResults chan<- []Result) {
 	var d Document
 	err = xml.NewDecoder(resp.Body).Decode(&d)
 	if err != nil {
-		log.Printf("%s rssSearch : Decode : ERROR : %s\n", engine, err)
+		log.Printf("%s : rssSearch : Decode : ERROR : %s\n", engine, err)
 		return
 	}
 
@@ -79,5 +81,5 @@ func rssSearch(engine string, uri string, searchResults chan<- []Result) {
 		})
 	}
 
-	log.Printf("%s rssSearch : Returned : Found[%d]\n", engine, len(results))
+	log.Printf("%s : rssSearch : Completed : Found[%d]\n", engine, len(results))
 }

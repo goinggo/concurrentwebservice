@@ -38,7 +38,7 @@ func NewGoogle() Searcher {
 // Search implements the Searcher interface. It performs a search
 // against Google.
 func (g Google) Search(searchTerm string, searchResults chan<- []Result) {
-	log.Printf("Google Search : Started : searchTerm[%s]\n", searchTerm)
+	log.Printf("Google : Search : Started : searchTerm[%s]\n", searchTerm)
 
 	// Need an empty slice so I can return an empty
 	// JSON document if necessary.
@@ -46,7 +46,7 @@ func (g Google) Search(searchTerm string, searchResults chan<- []Result) {
 
 	// On return send the results we have.
 	defer func() {
-		log.Println("Google Search : Info : Sending Results")
+		log.Println("Google : Search : Info : Sending Results")
 		searchResults <- results
 	}()
 
@@ -57,7 +57,7 @@ func (g Google) Search(searchTerm string, searchResults chan<- []Result) {
 	// Issue the search against Google.
 	resp, err := http.Get(uri)
 	if err != nil {
-		log.Printf("Google Search : Get : ERROR : %s\n", err)
+		log.Printf("Google : Search : Get : ERROR : %s\n", err)
 		return
 	}
 
@@ -68,7 +68,7 @@ func (g Google) Search(searchTerm string, searchResults chan<- []Result) {
 	var gr gResponse
 	err = json.NewDecoder(resp.Body).Decode(&gr)
 	if err != nil {
-		log.Printf("Google Search : Decode : ERROR : %s\n", err)
+		log.Printf("Google : Search : Decode : ERROR : %s\n", err)
 		return
 	}
 
@@ -82,5 +82,5 @@ func (g Google) Search(searchTerm string, searchResults chan<- []Result) {
 		})
 	}
 
-	log.Printf("Google Search : Completed : Found[%d]\n", len(results))
+	log.Printf("Google : Search : Completed : Found[%d]\n", len(results))
 }

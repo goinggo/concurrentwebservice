@@ -42,7 +42,7 @@ type Searcher interface {
 // Submit uses goroutines and channels to perform a search against the three
 // leading search engines concurrently.
 func Submit(options *Options) []Result {
-	log.Printf("Google Search : Started : %#v\n", options)
+	log.Printf("search : Submit : Started : %#v\n", options)
 
 	var final []Result
 	searchers := make(map[string]Searcher)
@@ -50,19 +50,19 @@ func Submit(options *Options) []Result {
 
 	// Create a Google Searcher if checked.
 	if options.Google {
-		log.Println("Submit : Info : Adding Google")
+		log.Println("search : Submit : Info : Adding Google")
 		searchers["google"] = NewGoogle()
 	}
 
 	// Create a Bing Searcher if checked.
 	if options.Bing {
-		log.Println("Submit : Info : Adding Bing")
+		log.Println("search : Submit : Info : Adding Bing")
 		searchers["bing"] = NewBing()
 	}
 
 	// Create a Bing Searcher if checked.
 	if options.Blekko {
-		log.Println("Submit : Info : Adding Blekko")
+		log.Println("search : Submit : Info : Adding Blekko")
 		searchers["blekko"] = NewBlekko()
 	}
 
@@ -75,11 +75,11 @@ func Submit(options *Options) []Result {
 	// Wait for the results to come back.
 	for search := 0; search < len(searchers); search++ {
 		// Wait to recieve results.
-		log.Println("Submit : Info : Waiting For Results...")
+		log.Println("search : Submit : Info : Waiting For Results...")
 		results := <-searchResults
 
 		// Save the results to the final slice.
-		log.Printf("Submit : Info : Results Returned : Results[%d]\n", len(results))
+		log.Printf("search : Submit : Info : Results Returned : Results[%d]\n", len(results))
 		final = append(final, results...)
 
 		// If we just want the first result, don't wait any longer and give
@@ -89,6 +89,6 @@ func Submit(options *Options) []Result {
 		}
 	}
 
-	log.Printf("Submit : Completed : Found [%d] Results\n", len(final))
+	log.Printf("search : Submit : Completed : Found [%d] Results\n", len(final))
 	return final
 }
