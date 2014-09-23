@@ -43,8 +43,7 @@ type (
 func rssSearch(engine string, uri string, searchResults chan<- []Result) {
 	log.Printf("%s : rssSearch : Started : URI[%s]\n", engine, uri)
 
-	// Need an empty slice so I can return an empty
-	// JSON document if necessary.
+	// Slice for the results.
 	var results []Result
 
 	// On return send the results we have.

@@ -42,8 +42,7 @@ func NewGoogle() Searcher {
 func (g Google) Search(searchTerm string, searchResults chan<- []Result) {
 	log.Printf("Google : Search : Started : searchTerm[%s]\n", searchTerm)
 
-	// Need an empty slice so I can return an empty
-	// JSON document if necessary.
+	// Slice for the results.
 	var results []Result
 
 	// On return send the results we have.
