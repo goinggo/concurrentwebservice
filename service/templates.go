@@ -15,7 +15,7 @@ var views = make(map[string]*template.Template)
 
 // init loads the existing templates for use by routing code.
 func init() {
-	// Inorder for the endpoint tests to run this needs to be
+	// In order for the endpoint tests to run this needs to be
 	// physically located. Trying to avoid configuration for now.
 	tmplPath := os.Getenv("GOPATH") + "/src/github.com/goinggo/concurrentwebservice"
 	loadTemplate("layout", tmplPath+"/views/basic-layout.html")
