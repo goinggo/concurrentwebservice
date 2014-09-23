@@ -17,6 +17,7 @@ bill@ardanstudios.com
 		
 	-- Run
 	cd $GOPATH/src/github.com/goinggo/concurrentwebservice
+	go build
 	./concurrentwebservice
 	http://localhost:9999/search
 
