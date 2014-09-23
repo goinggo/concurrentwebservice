@@ -45,7 +45,7 @@ func rssSearch(engine string, uri string, searchResults chan<- []Result) {
 
 	// Need an empty slice so I can return an empty
 	// JSON document if necessary.
-	results := []Result{}
+	var results []Result
 
 	// On return send the results we have.
 	defer func() {
