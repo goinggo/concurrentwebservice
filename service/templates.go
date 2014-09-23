@@ -7,6 +7,7 @@ import (
 	"html/template"
 	"io/ioutil"
 	"log"
+	"os"
 )
 
 // views contains a map of templates for rendering views.
@@ -14,9 +15,10 @@ var views = make(map[string]*template.Template)
 
 // init loads the existing templates for use by routing code.
 func init() {
-	loadTemplate("layout", "views/basic-layout.html")
-	loadTemplate("index", "views/index.html")
-	loadTemplate("results", "views/results.html")
+	tmplPath := os.Getenv("GOPATH") + "/src/github.com/goinggo/concurrentwebservice"
+	loadTemplate("layout", tmplPath+"/views/basic-layout.html")
+	loadTemplate("index", tmplPath+"/views/index.html")
+	loadTemplate("results", tmplPath+"/views/results.html")
 }
 
 // loadTemplate reads the specified template file for use.
