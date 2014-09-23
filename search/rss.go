@@ -52,7 +52,7 @@ func rssSearch(engine string, uri string, searchResults chan<- []Result) {
 		searchResults <- results
 	}()
 
-	// Issue the search against Blekko.
+	// Issue the search against the engine.
 	resp, err := http.Get(uri)
 	if err != nil {
 		log.Printf("%s : rssSearch : Get : ERROR : %s\n", engine, err)
