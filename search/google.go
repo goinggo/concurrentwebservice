@@ -11,24 +11,26 @@ import (
 // Google provides support for Google searches.
 type Google struct{}
 
-// gResult maps to the result document received from the search.
-type gResult struct {
-	GsearchResultClass string `json:"GsearchResultClass"`
-	UnescapedURL       string `json:"unescapedUrl"`
-	URL                string `json:"url"`
-	VisibleURL         string `json:"visibleUrl"`
-	CacheURL           string `json:"cacheUrl"`
-	Title              string `json:"title"`
-	TitleNoFormatting  string `json:"titleNoFormatting"`
-	Content            string `json:"content"`
-}
+type (
+	// gResult maps to the result document received from the search.
+	gResult struct {
+		GsearchResultClass string `json:"GsearchResultClass"`
+		UnescapedURL       string `json:"unescapedUrl"`
+		URL                string `json:"url"`
+		VisibleURL         string `json:"visibleUrl"`
+		CacheURL           string `json:"cacheUrl"`
+		Title              string `json:"title"`
+		TitleNoFormatting  string `json:"titleNoFormatting"`
+		Content            string `json:"content"`
+	}
 
-// gResponse contains the top level document.
-type gResponse struct {
-	ResponseData struct {
-		Results []gResult `json:"results"`
-	} `json:"responseData"`
-}
+	// gResponse contains the top level document.
+	gResponse struct {
+		ResponseData struct {
+			Results []gResult `json:"results"`
+		} `json:"responseData"`
+	}
+)
 
 // NewGoogle returns a Google Searcher value.
 func NewGoogle() Searcher {
