@@ -65,7 +65,7 @@ func (g Google) Search(searchTerm string, searchResults chan<- []Result) {
 	// Schedule the close of the response body.
 	defer resp.Body.Close()
 
-	// Decode the results into the slice of maps.
+	// Decode the JSON response into our struct type.
 	var gr gResponse
 	err = json.NewDecoder(resp.Body).Decode(&gr)
 	if err != nil {
